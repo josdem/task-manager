@@ -4,70 +4,73 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.Before;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TaskManagerIntegrationTests {
 
   private TaskManager taskManager;
+  private File file = new File("src/test/resources/tasks.txt");
 
   @Before
-  public void setup(){
+  public void setup() {
     taskManager = new TaskManager();
   }
 
   @Test
-  public void aTaskManagerWithZeroTasks(){
+  public void aTaskManagerWithZeroTasks() {
     assertNotNull(taskManager);
     assertTrue(taskManager.howManyTasks() == 0);
   }
 
   @Test
-  public void aTaskManagerWithOneTasks(){
+  public void aTaskManagerWithOneTasks() {
     assertNotNull(taskManager);
     taskManager.addTask(new Task());
     assertTrue(taskManager.howManyTasks() == 1);
   }
 
   @Test
-  public void addATaskFromAString(){
+  public void addATaskFromAString() {
     assertNotNull(taskManager);
-    taskManager.addTask("new task with String");
+    taskManager.addTask("new task");
     assertTrue(taskManager.howManyTasks() == 1);
   }
 
   @Test
-  public void addATasksFromAList(){
+  public void addATasksFromAList() {
     assertNotNull(taskManager);
     List<Task> tasksToAdd = new ArrayList<Task>();
-    tasksToAdd.add(new Task());
-    tasksToAdd.add(new Task());
+    tasksToAdd.add(new Task("new task"));
+    tasksToAdd.add(new Task("new task"));
     taskManager.addTask(tasksToAdd);
     assertTrue(taskManager.howManyTasks() == 2);
   }
 
   @Test
-  public void addATasksFromAFile(){
-    // TODO: Implements the feature
-    assertTrue(false);
+  public void addATasksFromAFile() throws FileNotFoundException {
+    taskManager.addTask(file);
+    assertTrue(taskManager.howManyTasks() == 1);
   }
 
   @Test
-  public void getATaskByIndex(){
+  public void getATaskByIndex() {
     addATaskFromAString();
     Task task = taskManager.getTaskAt(1);
     assertNotNull(task);
   }
 
   @Test
-  public void findTaskByDescription(){
+  public void findTaskByDescription() {
     addATaskFromAString();
     Task task = taskManager.findTask("new task");
     assertNotNull(task);
   }
 
   @Test
-  public void findAllTasksByDescription(){
+  public void findAllTasksByDescription() {
     addATasksFromAList();
     List<Task> tasksFound = taskManager.findTasks("new task");
     assertTrue(tasksFound.size() == 2);
