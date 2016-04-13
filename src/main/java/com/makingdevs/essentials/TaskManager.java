@@ -5,6 +5,10 @@ import java.util.List;
 public class TaskManager {
 
   private TaskStore taskStore;
+  
+  public TaskManager(){
+    taskStore = new TaskStoreImpl();
+  }
 
   public int howManyTasks() {
     return taskStore.count();
@@ -15,7 +19,7 @@ public class TaskManager {
   }
   
   public void addTask(String description) {
-    Task task = new Task();
+    Task task = new Task(description);
     taskStore.createTask(task);
   }
 
